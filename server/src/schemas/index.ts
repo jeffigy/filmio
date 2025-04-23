@@ -1,16 +1,15 @@
-import z, { string } from "zod";
+import z from "zod";
+
 export const getId = z.object({
-  id: z.string().transform((val, ctx) => {
-    const num = Number(val);
-    if (isNaN(num) || !Number.isInteger(num)) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "ID must be a valid number",
-      });
-      return z.NEVER;
+  id: z.string().refine(
+    (val) => {
+      const num = Number(val);
+      return !isNaN(num) && Number.isInteger(num);
+    },
+    {
+      message: "ID must be a valid number",
     }
-    return num;
-  }),
+  ),
 });
 
 export const getParamsId = z.object({
