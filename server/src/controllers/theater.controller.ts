@@ -26,7 +26,7 @@ export const handleGetTheater = async (
 ) => {
   const { id } = req.params;
 
-  const theater = await findTheaterById(+id);
+  const theater = await findTheaterById(id);
 
   if (!theater) {
     res.status(404).json({ message: "Theater not found" });
@@ -51,14 +51,14 @@ export const handleUpdateTheater = async (
 ) => {
   const { id } = req.params;
 
-  const theater = await findTheaterById(+id);
+  const theater = await findTheaterById(id);
 
   if (!theater) {
     res.status(404).json({ message: "Theater not found" });
     return;
   }
 
-  await updateTheater(req.body, +id);
+  await updateTheater(req.body, id);
   res.json({ message: "Theater updated" });
 };
 
@@ -68,14 +68,14 @@ export const handleDeleteTheater = async (
 ) => {
   const { id } = req.params;
 
-  const theater = await findTheaterById(+id);
+  const theater = await findTheaterById(id);
 
   if (!theater) {
     res.status(404).json({ message: "Theater not found" });
     return;
   }
 
-  await deleteTheater(+id);
+  await deleteTheater(id);
 
   res.json({ message: "Theater deleted" });
 };

@@ -7,7 +7,7 @@ export const findAllTheaters = async () => {
   return await db.select().from(theatersTable);
 };
 
-export const findTheaterById = async (id: number) => {
+export const findTheaterById = async (id: string) => {
   const [theater] = await db
     .select()
     .from(theatersTable)
@@ -25,7 +25,7 @@ export const createTheater = async (payload: TheaterInsert) => {
   return createdTheater;
 };
 
-export const updateTheater = async (payload: TheaterInsert, id: number) => {
+export const updateTheater = async (payload: TheaterInsert, id: string) => {
   const [updatedTheater] = await db
     .update(theatersTable)
     .set({ ...payload })
@@ -35,7 +35,7 @@ export const updateTheater = async (payload: TheaterInsert, id: number) => {
   return updatedTheater;
 };
 
-export const deleteTheater = async (id: number) => {
+export const deleteTheater = async (id: string) => {
   const [deletedTheater] = await db
     .delete(theatersTable)
     .where(eq(theatersTable.theaterId, id))

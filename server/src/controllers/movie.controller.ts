@@ -24,7 +24,7 @@ export const handleGetMovie = async (
   req: Request<GetId["params"], unknown, unknown>,
   res: Response
 ) => {
-  const id = Number(req.params.id);
+  const { id } = req.params;
 
   const movie = await findMovieById(id);
 
@@ -51,14 +51,14 @@ export const handleUpdateMovie = async (
 ) => {
   const { id } = req.params;
 
-  const movie = await findMovieById(+id);
+  const movie = await findMovieById(id);
 
   if (!movie) {
     res.status(404).json({ message: "Movie not found" });
     return;
   }
 
-  await updateMovie(req.body, +id);
+  await updateMovie(req.body, id);
   res.json({ message: "Movie updated" });
 };
 
@@ -68,14 +68,14 @@ export const handleDeleteMovie = async (
 ) => {
   const { id } = req.params;
 
-  const movie = await findMovieById(+id);
+  const movie = await findMovieById(id);
 
   if (!movie) {
     res.status(404).json({ message: "Movie not found" });
     return;
   }
 
-  await deleteMovie(+id);
+  await deleteMovie(id);
 
   res.json({ message: "Movie deleted" });
 };

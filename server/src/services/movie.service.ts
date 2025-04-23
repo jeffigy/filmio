@@ -7,7 +7,7 @@ export const findAllMovies = async () => {
   return await db.select().from(moviesTable);
 };
 
-export const findMovieById = async (id: number) => {
+export const findMovieById = async (id: string) => {
   const [movie] = await db
     .select()
     .from(moviesTable)
@@ -25,7 +25,7 @@ export const createMovie = async (payload: MovieInsert) => {
   return createdMovie;
 };
 
-export const updateMovie = async (payload: MovieInsert, id: number) => {
+export const updateMovie = async (payload: MovieInsert, id: string) => {
   const [updatedMovie] = await db
     .update(moviesTable)
     .set({ ...payload })
@@ -35,7 +35,7 @@ export const updateMovie = async (payload: MovieInsert, id: number) => {
   return updatedMovie;
 };
 
-export const deleteMovie = async (id: number) => {
+export const deleteMovie = async (id: string) => {
   const [deletedMovie] = await db
     .delete(moviesTable)
     .where(eq(moviesTable.movieId, id))

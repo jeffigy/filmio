@@ -1,15 +1,10 @@
+import { isCuid } from "@paralleldrive/cuid2";
 import z from "zod";
 
 export const getId = z.object({
-  id: z.string().refine(
-    (val) => {
-      const num = Number(val);
-      return !isNaN(num) && Number.isInteger(num);
-    },
-    {
-      message: "ID must be a valid number",
-    }
-  ),
+  id: z.string().refine(isCuid, {
+    message: "Invalid ID",
+  }),
 });
 
 export const getParamsId = z.object({
