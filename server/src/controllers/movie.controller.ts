@@ -24,9 +24,9 @@ export const handleGetMovie = async (
   req: Request<GetId["params"], unknown, unknown>,
   res: Response
 ) => {
-  const { id } = req.params;
+  const id = Number(req.params.id);
 
-  const movie = await findMovieById(+id);
+  const movie = await findMovieById(id);
 
   if (!movie) {
     res.status(404).json({ message: "Movie not found" });

@@ -1,4 +1,4 @@
-import z from "zod";
+import z, { string } from "zod";
 export const getId = z.object({
   id: z.string().transform((val, ctx) => {
     const num = Number(val);
