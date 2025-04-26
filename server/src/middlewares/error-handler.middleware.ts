@@ -6,7 +6,7 @@ const errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  let status = res.statusCode ?? 500;
+  let status = error.statusCode ?? 500;
   let message = error.message ?? "Something went wrong";
 
   if (error.code === "23505") {
