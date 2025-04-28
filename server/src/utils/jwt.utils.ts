@@ -11,17 +11,13 @@ export const generateRefreshToken = (payload: any) => {
   return sign({ userInfo: payload }, REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
 };
 
-export const verifyRefreshToken = async (payload: string) => {
-  const decoded = await new Promise<DecodedToken>((resolve, reject) => {
-    verify(payload, REFRESH_TOKEN_SECRET, (error, decoded) => {
-      if (error || !decoded) {
-        return reject(createError(401, "Unauthorized"));
-      }
-
-      resolve(decoded as DecodedToken);
-    });
-  });
-  return decoded;
+export const verifyRefreshToken = (payload: string) => {
+  try {
+    const decoded = verify(payload, REFRESH_TOKEN_SECRET) as DecodedToken;
+    return decoded;
+  } catch (error) {
+    throw createError(401, "Unauthorized");
+  }
 };
 
 export const verifyAccessToken = (payload: string) => {

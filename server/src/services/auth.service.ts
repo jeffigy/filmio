@@ -43,7 +43,7 @@ export const loginService = async (payload: Login["body"]) => {
 };
 
 export const refreshService = async (payload: string) => {
-  const { userInfo } = await verifyRefreshToken(payload);
+  const { userInfo } = verifyRefreshToken(payload);
 
   const foundUser = await findUserbyIdService(userInfo.userId);
 
@@ -52,7 +52,6 @@ export const refreshService = async (payload: string) => {
   }
 
   const { password: _password, ...userDetails } = foundUser;
-  console.log(userDetails);
 
   const token = generateAccessToken(userDetails);
 
