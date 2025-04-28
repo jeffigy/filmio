@@ -9,6 +9,7 @@ const validateSchema =
         body: req.body as unknown,
         params: req.params,
         query: req.query,
+        cookies: req.cookies,
       });
       next();
     } catch (error: unknown) {
