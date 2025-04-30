@@ -58,6 +58,9 @@ export const reservationsTable = pgTable(
       .primaryKey()
       .$defaultFn(createId),
     createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at")
+      .notNull()
+      .$onUpdate(() => new Date()),
     seatNumbers: text("seat_numbers").array().notNull(),
     showtimeId: varchar("showtime_id", { length: 255 }).notNull(), // one showtime can have many reservations
     userId: varchar("user_id", { length: 255 }).notNull(), // one user can have many reservations
