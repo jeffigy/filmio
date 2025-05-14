@@ -5,12 +5,16 @@ import MoviesPage from "./pages/Movies";
 import MovieDetails from "./pages/Movies/Details";
 import ShowtimesPage from "./pages/Showtimes";
 import ShowtimeDetails from "./pages/Showtimes/Details";
+import LoginPage from "./pages/auth/LoginPage";
+import SignupPage from "./pages/auth/SignupPage";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<RootLayout />}>
         <Route index element={<HomePage />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="signup" element={<SignupPage />} />
 
         <Route path="movies">
           <Route index element={<MoviesPage />} />
