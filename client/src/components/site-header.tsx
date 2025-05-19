@@ -1,17 +1,7 @@
-import { Menu, SidebarIcon } from "lucide-react";
-
-import { SearchForm } from "@/components/search-form";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { useSidebar } from "@/components/ui/sidebar";
+import { useStore } from "@/store";
+import { LogIn, Menu, UserRound } from "lucide-react";
 import { Link } from "react-router";
 import { ModeToggle } from "./mode-toggle";
 
@@ -40,11 +30,14 @@ export function SiteHeader() {
           </Link>
         </div>
 
-        <div className="hidden space-x-5 md:block">
-          {" "}
+        <div className="hidden items-center space-x-5 md:flex">
           {navLinks.map((navlink) => (
-            <Link to={navlink.to}>{navlink.label}</Link>
+            <Link key={navlink.to} to={navlink.to}>
+              {navlink.label}
+            </Link>
           ))}
+
+          <LoginDashButton />
           <ModeToggle />
         </div>
 
@@ -60,3 +53,24 @@ export function SiteHeader() {
     </header>
   );
 }
+
+const LoginDashButton = () => {
+  const { isAuthenticated } = useStore();
+
+  if (!isAuthenticated) {
+    return (
+      <Button asChild>
+        <Link to="/login">
+          <LogIn />
+          <p className="hidden md:block">Login</p>
+        </Link>
+      </Button>
+    );
+  }
+
+  return (
+    <Button size={"icon"} className="rounded-full">
+      <UserRound />
+    </Button>
+  );
+};

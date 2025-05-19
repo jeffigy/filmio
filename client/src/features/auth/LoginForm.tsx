@@ -8,19 +8,37 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useLoginMutation } from "@/hooks/useAuth";
+import { Loader } from "lucide-react";
+import React, { useState } from "react";
+import { Link } from "react-router";
 
 const LoginForm = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { isPending, mutateAsync: login } = useLoginMutation();
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      await login({ email, password });
+    } catch (error: unknown) {
+      console.log(error);
+    }
+  };
+
   return (
     <Card className="w-full max-w-sm">
       <CardHeader className="text-center">
         <CardTitle className="text-xl">Welcome back!</CardTitle>
         <CardDescription>
-          login using google or with email and password
+          Enter your credentials to access your account
         </CardDescription>
       </CardHeader>
 
       <CardContent>
-        <form className="flex flex-col gap-6">
+        <form onSubmit={handleLogin} className="flex flex-col gap-6">
           <Button variant={"outline"}>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path
@@ -40,25 +58,41 @@ const LoginForm = () => {
           <div className="flex flex-col space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" />
+              <Input
+                id="email"
+                value={email}
+                onChange={({ target }) => setEmail(target.value)}
+              />
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="password">Password</Label>{" "}
-                <a className="text-primary text-sm underline-offset-4 hover:underline">
+                <Link
+                  to="/forgot-password"
+                  className="text-primary text-sm underline-offset-4 hover:underline"
+                >
                   Forgot password?
-                </a>
+                </Link>
               </div>
-              <Input id="password" />
+              <Input
+                id="password"
+                value={password}
+                onChange={({ target }) => setPassword(target.value)}
+              />
             </div>
-            <Button className="w-full">Login</Button>
+            <Button disabled={isPending} type="submit" className="w-full">
+              {isPending && <Loader className="animate-spin" />}Login
+            </Button>
           </div>
 
           <div className="text-center text-sm">
             Don't have an account?{" "}
-            <a className="text-primary underline-offset-4 hover:underline">
+            <Link
+              to="/signup"
+              className="text-primary underline-offset-4 hover:underline"
+            >
               Sign up
-            </a>
+            </Link>
           </div>
         </form>
       </CardContent>
