@@ -8,9 +8,30 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useSignupMutation } from "@/hooks/useAuth";
+import { AxiosError } from "axios";
+import { Loader } from "lucide-react";
+import React, { useState } from "react";
 import { Link } from "react-router";
 
 const SignupForm = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { isPending, mutateAsync: signup } = useSignupMutation();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      await signup({ name, email, password });
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        console.log(error.response?.data.message);
+      }
+    }
+  };
+
   return (
     <Card className="w-full max-w-sm">
       <CardHeader className="text-center">
@@ -21,7 +42,7 @@ const SignupForm = () => {
       </CardHeader>
 
       <CardContent>
-        <form className="flex flex-col gap-6">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
           <Button variant={"outline"}>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path
@@ -41,11 +62,19 @@ const SignupForm = () => {
           <div className="flex flex-col space-y-4">
             <div className="space-y-2">
               <Label htmlFor="name">Name</Label>
-              <Input id="name" />
+              <Input
+                id="name"
+                value={name}
+                onChange={({ target }) => setName(target.value)}
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" />
+              <Input
+                id="email"
+                value={email}
+                onChange={({ target }) => setEmail(target.value)}
+              />
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
@@ -57,9 +86,15 @@ const SignupForm = () => {
                   Forgot password?
                 </Link>
               </div>
-              <Input id="password" />
+              <Input
+                id="password"
+                value={password}
+                onChange={({ target }) => setPassword(target.value)}
+              />
             </div>
-            <Button className="w-full">Sign up</Button>
+            <Button disabled={isPending} type="submit" className="w-full">
+              {isPending && <Loader className="animate-spin" />}Sign up
+            </Button>
           </div>
 
           <div className="text-center text-sm">
