@@ -1,6 +1,6 @@
 import { BASE_AUTH_URL } from "@/utils/config";
 import axiosInstance from ".";
-import { LoginCredentials, SignupCredentials } from "@/types/auth";
+import { LoginCredentials, SignupCredentials } from "@/types/auth.type";
 
 export const login = async (
   credentials: LoginCredentials,

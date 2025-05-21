@@ -1,6 +1,6 @@
 import { StateCreator } from "zustand";
 import { jwtDecode } from "jwt-decode";
-import { DecodedToken } from "@/types/auth";
+import { DecodedToken } from "@/types/auth.type";
 type AuthState = {
   authUser: null | any;
   token: null | string;

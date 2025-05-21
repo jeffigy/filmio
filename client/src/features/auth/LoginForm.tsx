@@ -10,21 +10,29 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useLoginMutation } from "@/hooks/useAuth";
 import { Loader } from "lucide-react";
-import React, { useState } from "react";
 import { Link } from "react-router";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { AxiosError } from "axios";
+import { toast } from "sonner";
+import { loginSchema } from "@/schemas/auth.schema";
+import { LoginCredentials } from "@/types/auth.type";
 
 const LoginForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: zodResolver(loginSchema) });
   const { isPending, mutateAsync: login } = useLoginMutation();
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleLogin = async (data: LoginCredentials) => {
     try {
-      await login({ email, password });
+      await login(data);
     } catch (error: unknown) {
-      console.log(error);
+      if (error instanceof AxiosError) {
+        toast.error(error.message);
+      }
     }
   };
 
@@ -38,7 +46,10 @@ const LoginForm = () => {
       </CardHeader>
 
       <CardContent>
-        <form onSubmit={handleLogin} className="flex flex-col gap-6">
+        <form
+          onSubmit={handleSubmit(handleLogin)}
+          className="flex flex-col gap-6"
+        >
           <Button variant={"outline"}>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path
@@ -56,15 +67,18 @@ const LoginForm = () => {
           </div>
 
           <div className="flex flex-col space-y-4">
-            <div className="space-y-2">
+            <div className="space-y-1">
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
-                value={email}
-                onChange={({ target }) => setEmail(target.value)}
+                className={`${errors.email && "border-destructive"}`}
+                {...register("email")}
               />
+              {errors.email && (
+                <p className="text-destructive">{errors.email.message}</p>
+              )}
             </div>
-            <div className="space-y-2">
+            <div className="space-y-1">
               <div className="flex items-center justify-between">
                 <Label htmlFor="password">Password</Label>{" "}
                 <Link
@@ -76,9 +90,13 @@ const LoginForm = () => {
               </div>
               <Input
                 id="password"
-                value={password}
-                onChange={({ target }) => setPassword(target.value)}
+                className={`${errors.password && "border-destructive"}`}
+                {...register("password")}
+                type="password"
               />
+              {errors.password && (
+                <p className="text-destructive">{errors.password.message}</p>
+              )}
             </div>
             <Button disabled={isPending} type="submit" className="w-full">
               {isPending && <Loader className="animate-spin" />}Login

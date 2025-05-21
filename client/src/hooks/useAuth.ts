@@ -1,6 +1,6 @@
 import { login, signup } from "@/api/authApi";
 import { useStore } from "@/store";
-import { LoginCredentials, SignupCredentials } from "@/types/auth";
+import { LoginCredentials, SignupCredentials } from "@/types/auth.type";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 

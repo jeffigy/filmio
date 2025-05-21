@@ -9,25 +9,28 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useSignupMutation } from "@/hooks/useAuth";
+import { signupSchema } from "@/schemas/auth.schema";
+import { SignupCredentials } from "@/types/auth.type";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosError } from "axios";
 import { Loader } from "lucide-react";
-import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import { Link } from "react-router";
 
 const SignupForm = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: zodResolver(signupSchema) });
   const { isPending, mutateAsync: signup } = useSignupMutation();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleSignup = async (data: SignupCredentials) => {
     try {
-      await signup({ name, email, password });
+      await signup(data);
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
-        console.log(error.response?.data.message);
+        console.log(error.message);
       }
     }
   };
@@ -42,7 +45,10 @@ const SignupForm = () => {
       </CardHeader>
 
       <CardContent>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+        <form
+          onSubmit={handleSubmit(handleSignup)}
+          className="flex flex-col gap-6"
+        >
           <Button variant={"outline"}>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path
@@ -60,37 +66,47 @@ const SignupForm = () => {
           </div>
 
           <div className="flex flex-col space-y-4">
-            <div className="space-y-2">
+            <div className="space-y-1">
               <Label htmlFor="name">Name</Label>
               <Input
                 id="name"
-                value={name}
-                onChange={({ target }) => setName(target.value)}
+                className={`${errors.name && "border-destructive"}`}
+                {...register("name")}
               />
+              {errors.name && (
+                <p className="text-destructive">{errors.name.message}</p>
+              )}
             </div>
-            <div className="space-y-2">
+            <div className="space-y-1">
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
-                value={email}
-                onChange={({ target }) => setEmail(target.value)}
+                className={`${errors.email && "border-destructive"}`}
+                {...register("email")}
               />
+              {errors.email && (
+                <p className="text-destructive">{errors.email.message}</p>
+              )}
             </div>
-            <div className="space-y-2">
+            <div className="space-y-1">
               <div className="flex items-center justify-between">
                 <Label htmlFor="password">Password</Label>{" "}
                 <Link
-                  to="/forgot-password"
                   className="text-primary text-sm underline-offset-4 hover:underline"
+                  to="/forgot-password"
                 >
                   Forgot password?
                 </Link>
               </div>
               <Input
+                type="password"
                 id="password"
-                value={password}
-                onChange={({ target }) => setPassword(target.value)}
+                className={`${errors.email && "border-destructive"}`}
+                {...register("password")}
               />
+              {errors.password && (
+                <p className="text-destructive">{errors.password.message}</p>
+              )}
             </div>
             <Button disabled={isPending} type="submit" className="w-full">
               {isPending && <Loader className="animate-spin" />}Sign up
