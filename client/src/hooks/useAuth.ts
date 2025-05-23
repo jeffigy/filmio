@@ -1,4 +1,4 @@
-import { login, signup } from "@/api/authApi";
+import { login, logout, refresh, signup } from "@/api/authApi";
 import { useStore } from "@/store";
 import { LoginCredentials, SignupCredentials } from "@/types/auth.type";
 import { useMutation } from "@tanstack/react-query";
@@ -43,6 +43,21 @@ export const useRefreshMutation = () => {
 
     onSuccess: (data) => {
       setCredentials(data.token);
+    },
+  });
+};
+
+export const useLogoutMutation = () => {
+  const { clearCredentials } = useStore.getState();
+  const navigate = useNavigate();
+
+  return useMutation({
+    mutationFn: () => logout(),
+    mutationKey: ["logout"],
+
+    onSuccess: () => {
+      clearCredentials();
+      navigate("/", { replace: true });
     },
   });
 };

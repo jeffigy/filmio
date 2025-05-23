@@ -18,3 +18,7 @@ export const signup = async (
 export const refresh = async (): Promise<{ token: string }> => {
   return (await axiosInstance.get(`${BASE_AUTH_URL}/refresh`)).data;
 };
+
+export const logout = async () => {
+  return (await axiosInstance.post(`${BASE_AUTH_URL}/logout`)).data;
+};

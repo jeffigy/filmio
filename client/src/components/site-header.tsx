@@ -5,6 +5,17 @@ import { LogIn, Menu, UserRound } from "lucide-react";
 import { Link } from "react-router";
 import { ModeToggle } from "./mode-toggle";
 
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import LogoutButton from "@/features/auth/LogoutButton";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+
 type NavLink = {
   to: string;
   label: string;
@@ -55,7 +66,7 @@ export function SiteHeader() {
 }
 
 const LoginDashButton = () => {
-  const { isAuthenticated } = useStore();
+  const { isAuthenticated, authUser } = useStore();
 
   if (!isAuthenticated) {
     return (
@@ -69,8 +80,27 @@ const LoginDashButton = () => {
   }
 
   return (
-    <Button size={"icon"} className="rounded-full">
-      <UserRound />
-    </Button>
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <Avatar>
+          <AvatarImage />
+          <AvatarFallback>
+            {authUser.name
+              .split(" ")
+
+              .map((name: string) => name[0].toUpperCase())
+              .join("")}
+          </AvatarFallback>
+        </Avatar>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>
+          <UserRound /> <span>Profile</span>
+        </DropdownMenuItem>
+        <LogoutButton />
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
