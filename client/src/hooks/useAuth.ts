@@ -33,3 +33,16 @@ export const useSignupMutation = () => {
     },
   });
 };
+
+export const useRefreshMutation = () => {
+  const { setCredentials } = useStore.getState();
+
+  return useMutation({
+    mutationFn: () => refresh(),
+    mutationKey: ["refresh"],
+
+    onSuccess: (data) => {
+      setCredentials(data.token);
+    },
+  });
+};
