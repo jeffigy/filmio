@@ -8,6 +8,7 @@ import ShowtimeDetails from "./pages/Showtimes/Details";
 import LoginPage from "./pages/auth/LoginPage";
 import SignupPage from "./pages/auth/SignupPage";
 import PersistAuth from "./features/auth/PersistAuth";
+import RedirectAuthenticatedRoute from "./features/auth/RedirectAuthenticatedRoute";
 
 function App() {
   return (
@@ -15,8 +16,22 @@ function App() {
       <Route element={<PersistAuth />}>
         <Route path="/" element={<RootLayout />}>
           <Route index element={<HomePage />} />
-          <Route path="login" element={<LoginPage />} />
-          <Route path="signup" element={<SignupPage />} />
+          <Route
+            path="login"
+            element={
+              <RedirectAuthenticatedRoute>
+                <LoginPage />
+              </RedirectAuthenticatedRoute>
+            }
+          />
+          <Route
+            path="signup"
+            element={
+              <RedirectAuthenticatedRoute>
+                <SignupPage />
+              </RedirectAuthenticatedRoute>
+            }
+          />
 
           <Route path="movies">
             <Route index element={<MoviesPage />} />
