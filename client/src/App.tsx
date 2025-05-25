@@ -1,6 +1,5 @@
-import { Route, Routes } from "react-router";
+import { Navigate, Route, Routes } from "react-router";
 import RootLayout from "./components/root-layout";
-import HomePage from "./pages/HomePage";
 import MoviesPage from "./pages/Movies";
 import MovieDetails from "./pages/Movies/Details";
 import ShowtimesPage from "./pages/Showtimes";
@@ -15,7 +14,7 @@ function App() {
     <Routes>
       <Route element={<PersistAuth />}>
         <Route path="/" element={<RootLayout />}>
-          <Route index element={<HomePage />} />
+          <Route index element={<Navigate to={"/movies"} replace />} />
           <Route
             path="login"
             element={

@@ -4,7 +4,6 @@ import { useStore } from "@/store";
 import { LogIn, Menu, UserRound } from "lucide-react";
 import { Link } from "react-router";
 import { ModeToggle } from "./mode-toggle";
-
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import LogoutButton from "@/features/auth/LogoutButton";
 import {
@@ -15,18 +14,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-
-type NavLink = {
-  to: string;
-  label: string;
-  icon?: React.ReactNode;
-};
-
-const navLinks: NavLink[] = [
-  { to: "/", label: "Home" },
-  { to: "/movies", label: "Movies" },
-  { to: "/showtimes", label: "Showtimes" },
-];
 
 export function SiteHeader() {
   const { toggleSidebar } = useSidebar();
@@ -42,12 +29,6 @@ export function SiteHeader() {
         </div>
 
         <div className="hidden items-center space-x-5 md:flex">
-          {navLinks.map((navlink) => (
-            <Link key={navlink.to} to={navlink.to}>
-              {navlink.label}
-            </Link>
-          ))}
-
           <LoginDashButton />
           <ModeToggle />
         </div>
