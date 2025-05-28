@@ -6,6 +6,10 @@ import { validateToken } from "@/middlewares/validate-token.middleware";
 const apiRoutes = Router();
 
 apiRoutes.use("/pub", publicRoutes);
-apiRoutes.use("/pvt", validateToken, privateRoutes);
+apiRoutes.use(
+  "/pvt",
+  //  validateToken,
+  privateRoutes
+);
 
 export default apiRoutes;
