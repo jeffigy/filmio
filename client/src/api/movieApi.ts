@@ -10,3 +10,7 @@ export const getMovies = async (
 export const getMovie = async (id: string) => {
   return (await axiosInstance.get(`${BASE_MOVIES_URL}/${id}`)).data;
 };
+
+export const createMovie = async (payload: any) => {
+  return (await axiosInstance.post(BASE_MOVIES_URL, payload)).data;
+};

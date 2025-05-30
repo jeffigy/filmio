@@ -8,6 +8,7 @@ import LoginPage from "./pages/auth/LoginPage";
 import SignupPage from "./pages/auth/SignupPage";
 import PersistAuth from "./features/auth/PersistAuth";
 import RedirectAuthenticatedRoute from "./features/auth/RedirectAuthenticatedRoute";
+import NewMoviePage from "./pages/Movies/New";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
 
           <Route path="movies">
             <Route index element={<MoviesPage />} />
+            <Route path="new" element={<NewMoviePage />} />
             <Route path=":id" element={<MovieDetails />} />
           </Route>
 
