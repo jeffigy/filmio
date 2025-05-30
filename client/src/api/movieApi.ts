@@ -1,8 +1,10 @@
 import { BASE_MOVIES_URL } from "@/utils/config";
 import axiosInstance from ".";
 
-export const getMovies = async () => {
-  return (await axiosInstance.get(BASE_MOVIES_URL)).data;
+export const getMovies = async (
+  filter: "now_showing" | "upcoming" | undefined,
+) => {
+  return (await axiosInstance.get(`${BASE_MOVIES_URL}?filter=${filter}`)).data;
 };
 
 export const getMovie = async (id: string) => {

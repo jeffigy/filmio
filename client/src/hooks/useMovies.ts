@@ -1,10 +1,12 @@
 import { getMovie, getMovies } from "@/api/movieApi";
 import { useQuery } from "@tanstack/react-query";
 
-export const useMoviesQuery = () => {
+export const useMoviesQuery = (
+  filter: "now_showing" | "upcoming" | undefined,
+) => {
   return useQuery({
     queryKey: ["movies"],
-    queryFn: getMovies,
+    queryFn: () => getMovies(filter),
   });
 };
 

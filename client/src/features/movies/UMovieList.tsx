@@ -5,7 +5,7 @@ import { Alert, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 
 const UMovieList = () => {
-  const { data, isLoading, isError, error } = useMoviesQuery();
+  const { data, isLoading, isError, error } = useMoviesQuery("upcoming");
 
   if (isLoading) return <MovieListLoader />;
   if (isError) {

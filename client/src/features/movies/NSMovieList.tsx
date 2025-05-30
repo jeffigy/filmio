@@ -5,7 +5,7 @@ import MovieListLoader from "./MovieListLoader";
 import Movie, { MovieSelect } from "./Movie";
 
 const NSMovieList = () => {
-  const { data, isLoading, isError, error } = useMoviesQuery();
+  const { data, isLoading, isError, error } = useMoviesQuery("now_showing");
 
   if (isLoading) return <MovieListLoader />;
   if (isError) {
